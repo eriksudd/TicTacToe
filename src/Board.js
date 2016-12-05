@@ -15,7 +15,8 @@ class Board extends Component {
       square7: '',
       square8: '',
       square9: '',
-      turn: 'X'
+      turn: 'X',
+      gameOver: false
     }
   }
 
@@ -27,10 +28,20 @@ class Board extends Component {
     const V1 = [ square1, square4, square7 ];
     const V2 = [ square2, square5, square8 ];
     const V3 = [ square3, square6, square9 ];
-    
-    if ( square1 === square2 === square3) {
-      console.log('winner')
-    } else if ()
+    const D1 = [ square1, square5, square9 ];
+    const D2 = [ square3, square5, square7 ];
+
+    const checks = [ H1, H2, H3, V1, V2, V3, D1, D2 ];
+
+    checks.forEach(check => {
+      console.log(check);
+      console.log('--------------------')
+      if (check[0] !== '' && check[0] === check[1] && check[1] === check[2]) {
+        console.log('winner');
+        this.setState({ gameOver: true })
+      }
+    })
+
   }
 
 
@@ -53,7 +64,7 @@ class Board extends Component {
 
   makeMove(square) {
     const { turn } = this.state;
-    this.setState({ [square]: turn });
+    this.setState({ [square]: turn }, this.checkForWinner );
     this.switchTurns()
   }
 
@@ -65,7 +76,17 @@ class Board extends Component {
 
 
   render() {
-    const { turn, square1, square2, square3, square4, square5, square6, square7, square8, square9 } = this.state;
+    const { gameOver, turn, square1, square2, square3, square4, square5, square6, square7, square8, square9 } = this.state;
+    if (gameOver) {
+      let winner = turn === 'X' ? 'O' : 'X'
+      return (
+        <div>
+          <div>Game Over!! Player { winner } Won the Game!!</div>
+        </div>
+      )
+
+    }
+
     return (
       <div>
         <div>
